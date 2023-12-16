@@ -166,3 +166,4 @@ MonoBehaviour:
     m_Bits: 8
   circleSize: 50
   outlineSize: 4
+  explosionPrefab: {fileID: 4740348260877995920, guid: bbc82c9be5df77b45bbefa0b335d5953, type: 3}

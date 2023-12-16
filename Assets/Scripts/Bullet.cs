@@ -9,6 +9,9 @@ public class Bullet : MonoBehaviour
 
     private Shape _destroyCircle;
     private Shape _outlineCircle;
+    
+    public GameObject explosionPrefab;
+    public bool collided = false;
 
     private void Awake()
     {
@@ -19,8 +22,14 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (planetLayer != (planetLayer | (1 << other.gameObject.layer))) return;
-        Destroy(gameObject);
         
+        if (collided) return;
+        Destroy(gameObject);
+        // Spawn explosion
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        print("HOLA");
+        
+        collided = true;
         if (other.transform.parent.CompareTag("Indestructible")) return;
         
         var primaryLayer = other.gameObject.GetComponentInParent<BasicPaintableLayer>();

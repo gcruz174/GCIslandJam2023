@@ -17,10 +17,12 @@ public class Health : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        OnDamage?.Invoke();
         if (currentHealth <= 0f)
         {
             isDead = true;
             currentHealth = 0f;
+            OnDeath?.Invoke();
         }
         
         if (damageEffect != null)

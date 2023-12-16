@@ -10,16 +10,24 @@ public class ShieldAnimation : MonoBehaviour
     
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            destroyPercentage.currentLayer++;
+        }
+        
         if (destroyPercentage.currentLayer > _lastLayer)
         {
             var spriteRenderer = shields[_lastLayer].GetComponent<SpriteRenderer>();
             StartCoroutine(TweenAlpha(spriteRenderer, 1f, 0f, 0.5f));
+            // StartCoroutine(TweenScale(shields[_lastLayer].transform, shields[_lastLayer].transform.localScale, shields[_lastLayer].transform.localScale * 4f, 0.5f));
             
             _lastLayer = destroyPercentage.currentLayer;
 
             if (_lastLayer >= shields.Length) return;
-            spriteRenderer = shields[_lastLayer].GetComponent<SpriteRenderer>();
-            StartCoroutine(TweenAlpha(spriteRenderer, 0f, 1f, 0.5f));
+            var currentShield = shields[_lastLayer];
+            spriteRenderer = currentShield.GetComponent<SpriteRenderer>();
+            StartCoroutine(TweenAlpha(spriteRenderer, 0f, 1f, 1f));
+            StartCoroutine(TweenScale(shields[_lastLayer].transform, currentShield.transform.localScale * 4f, currentShield.transform.localScale, 0.5f));
         }
     }
 
@@ -37,6 +45,18 @@ public class ShieldAnimation : MonoBehaviour
                 color.a = alpha;
                 spriteRenderer.color = color;
             }
+            yield return null;
+        }
+    }
+    
+    private IEnumerator TweenScale(Transform transform, Vector3 from, Vector3 to, float duration)
+    {
+        var startTime = Time.time;
+        while (Time.time - startTime < duration)
+        {
+            var t = (Time.time - startTime) / duration;
+            t = EaseInOut(t);
+            transform.localScale = Vector3.Lerp(from, to, t);
             yield return null;
         }
     }

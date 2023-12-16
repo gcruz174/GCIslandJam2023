@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
         var horizontalInput = Input.GetAxis("Horizontal");
         transform.Rotate(Vector3.forward, horizontalInput * rotationSpeed * Time.deltaTime);
         
-        if (horizontalInput != 0f)
-            spriteTransform.localScale = new Vector3(horizontalInput < 0f ? -0.1f : 0.1f, 0.1f, 0.1f);
+        // if (horizontalInput != 0f)
+        //     spriteTransform.localScale = new Vector3(horizontalInput < 0f ? -0.1f : 0.1f, 0.1f, 0.1f);
     }
 }
