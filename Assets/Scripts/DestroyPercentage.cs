@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class DestroyPercentage : MonoBehaviour
 {
-    public Transform collidableLayer;
+    public Transform[] collidableLayers;
+    public int currentLayer = 0;
+
     public TMP_Text percentageText;
     
     private float _initialArea = -1f;
@@ -14,23 +16,26 @@ public class DestroyPercentage : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(1f);
-        _initialArea = CalculateBoxCollidersArea(collidableLayer.GetComponentsInChildren<BoxCollider2D>()) * 1.1f;
+        _initialArea = CalculateBoxCollidersArea(collidableLayers[0].GetComponentsInChildren<BoxCollider2D>()) * 1.1f;
     }
     
     private void Update()
     {
         if (_initialArea < 0f) return;
-        var currentArea = CalculateBoxCollidersArea(collidableLayer.GetComponentsInChildren<BoxCollider2D>());
+        var currentArea = CalculateBoxCollidersArea(collidableLayers[currentLayer].GetComponentsInChildren<BoxCollider2D>());
         var percentage = 100f - currentArea / _initialArea * 100;
         percentageText.text = $"{percentage:0}%";
         
         if (percentage > 99f)
         {
-            percentageText.text = "100%";
-            percentageText.color = Color.green;
+            Destroy(collidableLayers[currentLayer].gameObject);
+            currentLayer++;
             
-            _initialArea = -1f;
-            Destroy(collidableLayer.gameObject);
+            // Remove indestructible tag from the next layer
+            if (currentLayer < collidableLayers.Length)
+            {
+                collidableLayers[currentLayer].tag = "Untagged";
+            }
         }
     }
     
