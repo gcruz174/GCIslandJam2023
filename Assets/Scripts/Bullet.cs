@@ -7,14 +7,14 @@ public class Bullet : MonoBehaviour
     public LayerMask planetLayer;
     public int circleSize = 16;
     public int outlineSize = 4;
-    
-    protected Shape destroyCircle;
-    protected Shape outlineCircle;
+
+    private Shape _destroyCircle;
+    private Shape _outlineCircle;
 
     private void Awake()
     {
-        destroyCircle = Shape.GenerateShapeCircle(circleSize);
-        outlineCircle = Shape.GenerateShapeCircle(circleSize + outlineSize);
+        _destroyCircle = Shape.GenerateShapeCircle(circleSize);
+        _outlineCircle = Shape.GenerateShapeCircle(circleSize + outlineSize);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         { 
             Color = Color.clear, 
             Position = new Vector2Int((int)(hitPoint.x * primaryLayer.PPU) - circleSize, (int)(hitPoint.y * primaryLayer.PPU) - circleSize), 
-            Shape = destroyCircle, 
+            Shape = _destroyCircle, 
             PaintingMode=PaintingMode.REPLACE_COLOR,
             DestructionMode = DestructionMode.DESTROY
         });
@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
         { 
             Color = new Color(0.0f,0.0f,0.0f,0.75f), 
             Position = new Vector2Int((int)(hitPoint.x * secondaryLayer.PPU) - circleSize-outlineSize, (int)(hitPoint.y * secondaryLayer.PPU) - circleSize-outlineSize), 
-            Shape = outlineCircle, 
+            Shape = _outlineCircle, 
             PaintingMode=PaintingMode.REPLACE_COLOR,
             DestructionMode = DestructionMode.NONE
         });

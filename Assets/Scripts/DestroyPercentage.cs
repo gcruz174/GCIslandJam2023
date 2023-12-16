@@ -23,6 +23,15 @@ public class DestroyPercentage : MonoBehaviour
         var currentArea = CalculateBoxCollidersArea(collidableLayer.GetComponentsInChildren<BoxCollider2D>());
         var percentage = 100f - currentArea / _initialArea * 100;
         percentageText.text = $"{percentage:0}%";
+        
+        if (percentage > 99f)
+        {
+            percentageText.text = "100%";
+            percentageText.color = Color.green;
+            
+            _initialArea = -1f;
+            Destroy(collidableLayer.gameObject);
+        }
     }
     
     private float CalculateBoxCollidersArea(IEnumerable<BoxCollider2D> boxColliders)
