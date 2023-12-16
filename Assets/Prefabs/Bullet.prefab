@@ -164,5 +164,5 @@ MonoBehaviour:
   planetLayer:
     serializedVersion: 2
     m_Bits: 8
-  circleSize: 20
+  circleSize: 26
   outlineSize: 4
