@@ -12,7 +12,7 @@ public class ButtonController : MonoBehaviour
 
     public void Controles()
     {
-        SceneManager.LoadScene("Controls");
+        SceneManager.LoadScene("Controles");
     }
 
     public void Salir()

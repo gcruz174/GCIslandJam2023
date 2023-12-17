@@ -6,29 +6,29 @@ public class ShieldAnimation : MonoBehaviour
     public DestroyPercentage destroyPercentage;
     public GameObject[] shields;
     
-    private int _lastLayer = 0;
-    
-    private void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            destroyPercentage.currentLayer++;
-        }
+        destroyPercentage.OnLayerDestroyed += FadeLayer;
+    }
+    
+    private void OnDestroy()
+    {
+        destroyPercentage.OnLayerDestroyed -= FadeLayer;
+    }
+    
+    private void FadeLayer(int layerNumber)
+    {
+        if (layerNumber > 1) return;
         
-        if (destroyPercentage.currentLayer > _lastLayer)
-        {
-            var spriteRenderer = shields[_lastLayer].GetComponent<SpriteRenderer>();
-            StartCoroutine(TweenAlpha(spriteRenderer, 1f, 0f, 0.5f));
-            // StartCoroutine(TweenScale(shields[_lastLayer].transform, shields[_lastLayer].transform.localScale, shields[_lastLayer].transform.localScale * 4f, 0.5f));
-            
-            _lastLayer = destroyPercentage.currentLayer;
-
-            if (_lastLayer >= shields.Length) return;
-            var currentShield = shields[_lastLayer];
-            spriteRenderer = currentShield.GetComponent<SpriteRenderer>();
-            StartCoroutine(TweenAlpha(spriteRenderer, 0f, 1f, 1f));
-            StartCoroutine(TweenScale(shields[_lastLayer].transform, currentShield.transform.localScale * 4f, currentShield.transform.localScale, 0.5f));
-        }
+        var spriteRenderer = shields[layerNumber].GetComponent<SpriteRenderer>();
+        StartCoroutine(TweenAlpha(spriteRenderer, 1f, 0f, 0.5f));
+        
+        // Fade next layer (if exists)
+        if (layerNumber + 1 >= shields.Length) return;
+        var currentShield = shields[layerNumber + 1];
+        spriteRenderer = currentShield.GetComponent<SpriteRenderer>();
+        StartCoroutine(TweenAlpha(spriteRenderer, 0f, 1f, 1f));
+        StartCoroutine(TweenScale(shields[layerNumber + 1].transform, currentShield.transform.localScale * 4f, currentShield.transform.localScale, 0.5f));
     }
 
     private IEnumerator TweenAlpha(SpriteRenderer spriteRenderer, float from, float to, float duration)
