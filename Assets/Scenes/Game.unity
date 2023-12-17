@@ -2463,10 +2463,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1825046704794635350, guid: 6e8937b6813a6b440bfe880c1491cb07, type: 3}
-  spawnRate: 0.1
+  spawnRate: 0.02
   modeDuration: 10
-  bulletSpeed: 20
-  rotationSpeed: 6
+  bulletSpeed: 5
+  rotationSpeed: 7
   spawnMode: 2
 --- !u!1 &1522311050
 GameObject:
